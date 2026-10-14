@@ -40,9 +40,8 @@
     .brand-title { font-size: 46.67px; font-weight: 700; color: var(--text-dark); letter-spacing: 0.8px; line-height: 1.0; }
     .brand-icon { width: 34px; height: 34px; background-color: var(--accent-cyan); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
 
-    .header-actions { display: flex; gap: 12px; }
-    .btn-secondary { background: var(--bg-main); color: var(--text-dark); border: 1px solid var(--border-color); padding: 12px 20px; border-radius: 30px; font-size: 14px; font-weight: bold; cursor: pointer; }
-    .btn-primary { background-color: var(--teal-primary); color: #ffffff; border: none; padding: 12px 22px; border-radius: 30px; font-size: 14px; font-weight: bold; cursor: pointer; }
+    .btn-primary { background-color: var(--teal-primary); color: #ffffff; border: none; padding: 12px 22px; border-radius: 30px; font-size: 14px; font-weight: bold; cursor: pointer; transition: opacity 0.2s; }
+    .btn-primary:hover { opacity: 0.9; }
 
     .hero-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 16px; }
     .bento-card { background: var(--bg-card); border-radius: 24px; padding: 24px; box-shadow: 0 4px 12px rgba(10, 30, 45, 0.03); display: flex; flex-direction: column; justify-content: space-between; }
@@ -52,14 +51,116 @@
     .bento-dark .stat-number { color: var(--accent-cyan); }
     .stat-label { font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-subtle); font-weight: bold; }
 
-    .controls-bar { background: var(--bg-main); padding: 16px 24px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
-    .filter-group { display: flex; gap: 8px; }
-    .pill-btn { background-color: var(--bg-surface); border: none; padding: 8px 18px; border-radius: 20px; font-size: 14px; font-weight: bold; cursor: pointer; }
-    .pill-btn.active { background-color: var(--accent-cyan); color: var(--text-dark); }
-    .search-input { background-color: var(--bg-surface); border: 1px solid transparent; padding: 10px 18px; border-radius: 20px; font-size: 14px; width: 280px; outline: none; }
+    /* Transparente Controls Bar ohne weissen Container-Kasten */
+    .controls-bar {
+      background: transparent;
+      padding: 4px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .filter-group { display: flex; gap: 8px; align-items: center; }
+
+    /* Inaktive Buttons weiss (#ffffff), aktive Buttons cyan (#00c3cd) */
+    .pill-btn {
+      background-color: #ffffff;
+      border: 1px solid transparent;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--text-dark);
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(10, 30, 45, 0.03);
+      transition: all 0.2s;
+    }
+
+    .pill-btn:hover { background-color: #f8fafc; }
+
+    .pill-btn.active {
+      background-color: var(--accent-cyan);
+      color: var(--text-dark);
+      border-color: transparent;
+    }
+
+    .right-controls { display: flex; gap: 10px; align-items: center; }
+
+    /* Weisses Suchfeld */
+    .search-input {
+      background-color: #ffffff;
+      border: 1px solid transparent;
+      padding: 10px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      width: 260px;
+      outline: none;
+      box-shadow: 0 2px 6px rgba(10, 30, 45, 0.03);
+    }
+
+    .ranking-toggle-btn {
+      background-color: #ffffff;
+      border: 1px solid transparent;
+      padding: 10px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--text-dark);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(10, 30, 45, 0.03);
+      transition: all 0.2s;
+    }
+
+    .ranking-toggle-btn.active {
+      background-color: var(--orange-alert);
+      color: #ffffff;
+    }
 
     .trends-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px; }
-    .trend-card { background: var(--bg-main); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 16px; border: 1px solid rgba(209, 216, 221, 0.6); position: relative; cursor: pointer; }
+    .trends-grid.ranking-mode { display: flex; flex-direction: column; gap: 12px; }
+
+    .trend-card {
+      background: var(--bg-main);
+      border-radius: 24px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      border: 1px solid rgba(209, 216, 221, 0.6);
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .trend-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(10, 30, 45, 0.06); }
+
+    .trends-grid.ranking-mode .trend-card {
+      padding: 16px 24px;
+      border-radius: 16px;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .trends-grid.ranking-mode .use-case-box,
+    .trends-grid.ranking-mode .trend-desc,
+    .trends-grid.ranking-mode .alert-banner,
+    .trends-grid.ranking-mode .card-edit-btn {
+      display: none;
+    }
+
+    .trends-grid.ranking-mode .ranking-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: 70%;
+    }
 
     .alert-banner { background-color: #fff3e6; border: 1px solid var(--orange-alert); padding: 12px; border-radius: 12px; font-size: 13px; display: flex; flex-direction: column; gap: 6px; }
     .alert-banner-header { font-weight: bold; color: var(--orange-alert); display: flex; justify-content: space-between; }
@@ -73,11 +174,33 @@
     .timeframe-badge { font-size: 12px; font-weight: bold; padding: 4px 12px; border-radius: 12px; background-color: var(--accent-cyan); }
     .trend-title { font-size: 18px; font-weight: bold; color: var(--text-dark); }
 
+    .use-case-box { background-color: var(--bg-surface); border-radius: 16px; padding: 14px; }
+    .use-case-title { font-weight: bold; color: var(--teal-primary); font-size: 12px; margin-bottom: 4px; text-transform: uppercase; }
+
+    .card-edit-btn {
+      position: absolute; bottom: 16px; right: 16px; background: var(--bg-surface); border: none;
+      width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px;
+    }
+    .card-edit-btn:hover { background: var(--accent-cyan); }
+
     .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 30, 45, 0.6); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
     .modal-overlay.active { display: flex; }
     .modal-content { background: var(--bg-main); border-radius: 24px; max-width: 650px; width: 100%; padding: 28px; max-height: 85vh; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
     .close-btn { background: var(--bg-surface); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-weight: bold; }
-    .news-item { background: var(--bg-surface); padding: 12px 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; margin-bottom: 8px; }
+    
+    .news-card-inline {
+      background: var(--bg-main);
+      border-radius: 20px;
+      padding: 20px;
+      border: 1px solid rgba(209, 216, 221, 0.8);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 12px; font-weight: bold; color: var(--gray-subtle); }
+    .form-control { padding: 10px 14px; border-radius: 12px; border: 1px solid var(--border-color); font-size: 14px; outline: none; }
   </style>
 </head>
 <body>
@@ -99,10 +222,7 @@
           <div class="brand-icon">Σ</div>
         </div>
       </div>
-      <div class="header-actions">
-        <button class="btn-secondary" onclick="openGlobalNewsModal()">📰 News Feed (<span id="news-count">3</span>)</button>
-        <button class="btn-primary" onclick="triggerNewsChallenge()">⚡ News Challenge Ausführen</button>
-      </div>
+      <button class="btn-primary" onclick="triggerNewsChallenge()">⚡ News Challenge Ausführen</button>
     </header>
 
     <div class="hero-grid">
@@ -127,30 +247,76 @@
       </div>
     </div>
 
+    <!-- Transparente Controls-Bar ohne Umrandungs-Kasten -->
     <div class="controls-bar">
       <div class="filter-group">
+        <button class="pill-btn" id="newsFeedBtn" onclick="showNewsFeed(this)">News Feed (3)</button>
         <button class="pill-btn active" onclick="filterTimeframe('all', this)">Alle Trends</button>
         <button class="pill-btn" onclick="filterTimeframe('2 Jahre', this)">2 Jahre</button>
         <button class="pill-btn" onclick="filterTimeframe('5 Jahre', this)">5 Jahre</button>
         <button class="pill-btn" onclick="filterTimeframe('10 Jahre', this)">10 Jahre</button>
       </div>
 
-      <div class="search-container">
-        <input type="text" class="search-input" id="searchInput" placeholder="Trends suchen..." onkeyup="renderTrends()">
+      <div class="right-controls">
+        <input type="text" class="search-input" id="searchInput" placeholder="Trends suchen..." onkeyup="renderCurrentView()">
+        <button class="ranking-toggle-btn" id="rankingToggleBtn" onclick="toggleRankingView()">★ Ranking View</button>
       </div>
     </div>
 
     <div class="trends-grid" id="trendsGrid"></div>
   </div>
 
-  <!-- Newsfeed Modal -->
-  <div class="modal-overlay" id="newsModal">
+  <!-- Detail Modal -->
+  <div class="modal-overlay" id="detailModal">
     <div class="modal-content">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h3>📰 Live Tech News Feed (Letzte 24h)</h3>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <span class="trend-number" id="modal-number">TREND 01</span>
+          <span class="timeframe-badge" id="modal-timeframe">2 Jahre</span>
+        </div>
         <button class="close-btn" onclick="closeModals()">✕</button>
       </div>
-      <div id="global-news-list"></div>
+      <h2 id="modal-title" style="font-size: 22px;"></h2>
+      <p id="modal-desc" style="color: #4a5568; font-size: 14px;"></p>
+      <div class="use-case-box">
+        <div class="use-case-title">Schwarz Gruppe Implikationen</div>
+        <ul id="modal-schwarz" style="padding-left:18px; font-size:13px;"></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div class="modal-overlay" id="editModal">
+    <div class="modal-content">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3>Trend Bearbeiten</h3>
+        <button class="close-btn" onclick="closeModals()">✕</button>
+      </div>
+      <div class="form-group">
+        <label>Ranking / Nummer</label>
+        <input type="text" class="form-control" id="edit-id">
+      </div>
+      <div class="form-group">
+        <label>Headline</label>
+        <input type="text" class="form-control" id="edit-title">
+      </div>
+      <div class="form-group">
+        <label>Beschreibung</label>
+        <textarea class="form-control" id="edit-desc" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Zeitlicher Horizont</label>
+        <select class="form-control" id="edit-timeframe">
+          <option value="2 Jahre">2 Jahre</option>
+          <option value="5 Jahre">5 Jahre</option>
+          <option value="10 Jahre">10 Jahre</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Schwarz Gruppe Implikationen (Eine pro Zeile)</label>
+        <textarea class="form-control" id="edit-schwarz" rows="3"></textarea>
+      </div>
+      <button class="btn-primary" onclick="saveTrendEdit()">Änderungen Speichern</button>
     </div>
   </div>
 
@@ -163,7 +329,7 @@
         document.getElementById('passwordScreen').style.display = 'none';
         document.getElementById('appContainer').classList.add('unlocked');
         sessionStorage.setItem('sigma_auth', 'true');
-        renderTrends();
+        renderCurrentView();
       } else {
         document.getElementById('passwordError').style.display = 'block';
       }
@@ -174,10 +340,15 @@
       document.getElementById('appContainer').classList.add('unlocked');
     }
 
+    let activeView = 'trends'; // 'trends' oder 'news'
+    let currentFilter = 'all';
+    let isRankingView = false;
+    let editingTrendId = null;
+
     let globalNews = [
-      { date: "Heute 11:30", title: "Tesla & Figure 02 skalierten Piloten in der Logistik", source: "TechCrunch", trend: "Physical AI" },
-      { date: "Gestern 18:00", title: "NIST veröffentlicht finale Post-Quantum Kryptospezifikation", source: "ArXiv Security", trend: "Quantum-Safe Crypto" },
-      { date: "Gestern 09:15", title: "LangChain stellt Agentic Multi-Systems v2 vor", source: "VentureBeat", trend: "Agentic AI" }
+      { date: "Heute 11:30", title: "Tesla & Figure 02 skalierten Piloten in der Logistik", source: "TechCrunch", trend: "Physical AI & Humanoide Robotik", desc: "Neue Durchbrüche bei feinmotorischer Greif-KI verkürzen den Zeitplan für den produktiven Einsatz in Lagerzentren." },
+      { date: "Gestern 18:00", title: "NIST veröffentlicht finale Post-Quantum Kryptospezifikation", source: "ArXiv Security", trend: "Quantum-Safe Crypto", desc: "Unternehmen werden aufgerufen, Vorbereitungen für die Umstellung kritischer Verschlüsselungen auf PQC zu beschleunigen." },
+      { date: "Gestern 09:15", title: "LangChain stellt Agentic Multi-Systems v2 vor", source: "VentureBeat", trend: "Agentic AI & Multiagentensysteme", desc: "Autonome Agenten-Netzwerke übernehmen zunehmend komplexe Enterprise-Schnittstellen." }
     ];
 
     let trendsData = [
@@ -194,50 +365,85 @@
       { id: "11", title: "Hybrid Cloud / Hybrid Computing", timeframe: "2 Jahre", desc: "Orchestrierung von Edge und Cloud.", schwarz: ["Edge-Filialsysteme mit STACKIT"], pendingAlert: null }
     ];
 
-    let currentFilter = 'all';
+    function renderCurrentView() {
+      if(activeView === 'news') {
+        renderNewsGrid();
+      } else {
+        renderTrends();
+      }
+    }
 
     function renderTrends() {
       const grid = document.getElementById('trendsGrid');
       const search = document.getElementById('searchInput').value.toLowerCase();
       grid.innerHTML = '';
 
+      if (isRankingView) grid.classList.add('ranking-mode');
+      else grid.classList.remove('ranking-mode');
+
       let alertCount = 0;
       let focus2yCount = 0;
 
-      trendsData.forEach(trend => {
-        if(trend.timeframe === "2 Jahre") focus2yCount++;
-        if(trend.pendingAlert) alertCount++;
+      let filtered = trendsData.filter(item => {
+        const matchesFilter = currentFilter === 'all' || item.timeframe.includes(currentFilter);
+        const matchesSearch = item.title.toLowerCase().includes(search) || item.desc.toLowerCase().includes(search);
+        return matchesFilter && matchesSearch;
+      });
 
+      filtered.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+
+      trendsData.forEach(t => {
+        if(t.timeframe === "2 Jahre") focus2yCount++;
+        if(t.pendingAlert) alertCount++;
+      });
+
+      filtered.forEach(trend => {
         const card = document.createElement('div');
         card.className = 'trend-card';
+        card.onclick = (e) => {
+          if(!e.target.classList.contains('card-edit-btn') && !e.target.classList.contains('btn-accept') && !e.target.classList.contains('btn-reject')) {
+            openDetailModal(trend.id);
+          }
+        };
 
-        card.innerHTML = `
-          <div class="card-header">
-            <span class="trend-number">TREND ${trend.id}</span>
-            <span class="timeframe-badge">${trend.timeframe}</span>
-          </div>
-          <div>
-            <div class="trend-title">${trend.title}</div>
-            <div style="font-size: 13px; color: var(--gray-subtle); margin-top: 4px;">${trend.desc}</div>
-          </div>
-          ${trend.pendingAlert ? `
-            <div class="alert-banner">
-              <div class="alert-banner-header">
-                <span>⚠️ EMPFEHLUNG DER KI</span>
-              </div>
-              <div>${trend.pendingAlert.reason}</div>
-              <div style="font-size: 11px; color: var(--gray-subtle); margin-top:2px;">Beleg: "${trend.pendingAlert.sourceNews}"</div>
-              <div class="alert-actions">
-                <button class="btn-accept" onclick="acceptAlert('${trend.id}')">✓ Akzeptieren (${trend.pendingAlert.suggestedTimeframe})</button>
-                <button class="btn-reject" onclick="rejectAlert('${trend.id}')">✕ Ablehnen</button>
-              </div>
+        if (isRankingView) {
+          card.innerHTML = `
+            <div class="ranking-left">
+              <span class="trend-number">TREND ${trend.id}</span>
+              <div class="trend-title">${trend.title}</div>
             </div>
-          ` : ''}
-          <div style="background: var(--bg-surface); padding: 12px; border-radius: 12px; font-size: 12px;">
-            <div style="font-weight:bold; color:var(--teal-primary); margin-bottom:4px;">Schwarz Gruppe Implikation</div>
-            ${trend.schwarz.join(' • ')}
-          </div>
-        `;
+            <span class="timeframe-badge">${trend.timeframe}</span>
+          `;
+        } else {
+          card.innerHTML = `
+            <div class="card-header">
+              <span class="trend-number">TREND ${trend.id}</span>
+              <span class="timeframe-badge">${trend.timeframe}</span>
+            </div>
+            <div>
+              <div class="trend-title">${trend.title}</div>
+              <div style="font-size: 13px; color: var(--gray-subtle); margin-top: 4px;">${trend.desc}</div>
+            </div>
+            ${trend.pendingAlert ? `
+              <div class="alert-banner">
+                <div class="alert-banner-header">
+                  <span>⚠️ EMPFEHLUNG DER KI</span>
+                </div>
+                <div>${trend.pendingAlert.reason}</div>
+                <div style="font-size: 11px; color: var(--gray-subtle); margin-top:2px;">Beleg: "${trend.pendingAlert.sourceNews}"</div>
+                <div class="alert-actions">
+                  <button class="btn-accept" onclick="acceptAlert('${trend.id}')">✓ Akzeptieren (${trend.pendingAlert.suggestedTimeframe})</button>
+                  <button class="btn-reject" onclick="rejectAlert('${trend.id}')">✕ Ablehnen</button>
+                </div>
+              </div>
+            ` : ''}
+            <div class="use-case-box">
+              <div class="use-case-title">Schwarz Gruppe Implikation</div>
+              <div style="font-size:12px;">${trend.schwarz.join(' • ')}</div>
+            </div>
+            <button class="card-edit-btn" onclick="openEditModal('${trend.id}', event)">✏️</button>
+          `;
+        }
         grid.appendChild(card);
       });
 
@@ -245,16 +451,71 @@
       document.getElementById('focus-counter').innerText = focus2yCount;
     }
 
+    function renderNewsGrid() {
+      const grid = document.getElementById('trendsGrid');
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      grid.innerHTML = '';
+      grid.classList.remove('ranking-mode');
+
+      let filteredNews = globalNews.filter(n => n.title.toLowerCase().includes(search) || n.trend.toLowerCase().includes(search));
+
+      filteredNews.forEach(news => {
+        const card = document.createElement('div');
+        card.className = 'news-card-inline';
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--gray-subtle);">
+            <span>${news.source}</span>
+            <span>${news.date}</span>
+          </div>
+          <div style="font-size:16px; font-weight:bold; color:var(--text-dark);">${news.title}</div>
+          <div style="font-size:13px; color:var(--gray-subtle);">${news.desc}</div>
+          <div style="margin-top:8px; font-size:12px; background:var(--bg-surface); padding:6px 12px; border-radius:12px; display:inline-block; font-weight:bold; color:var(--teal-primary);">
+            Betrifft: ${news.trend}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function showNewsFeed(btn) {
+      activeView = 'news';
+      document.querySelectorAll('.filter-group .pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderCurrentView();
+    }
+
+    function filterTimeframe(tf, btn) {
+      activeView = 'trends';
+      currentFilter = tf;
+      document.querySelectorAll('.filter-group .pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderCurrentView();
+    }
+
+    function toggleRankingView() {
+      if(activeView === 'news') return; // Ranking nur im Trends Mode
+      isRankingView = !isRankingView;
+      const btn = document.getElementById('rankingToggleBtn');
+      if (isRankingView) btn.classList.add('active');
+      else btn.classList.remove('active');
+      renderCurrentView();
+    }
+
     function triggerNewsChallenge() {
-      // KI-Agent Ausführung & Alert Generierung
       trendsData[2].pendingAlert = {
         suggestedTimeframe: "2 Jahre",
         reason: "Vorschlag: Zeithorizont von 5 Jahre auf 2 Jahre verkürzen.",
         sourceNews: "Tesla & Figure 02 skalierten Piloten in der Logistik"
       };
 
-      renderTrends();
-      alert("⚡ News Challenge ausgeführt! Die KI hat 1 neuen Vorschlag generiert. Du kannst ihn direkt auf der Kachel prüfen, akzeptieren oder ablehnen.");
+      if(activeView === 'news') {
+        activeView = 'trends';
+        document.querySelectorAll('.filter-group .pill-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.filter-group .pill-btn')[1].classList.add('active');
+      }
+
+      renderCurrentView();
+      alert("⚡ News Challenge ausgeführt! Die KI hat 1 neuen Vorschlag generiert. Du kannst ihn direkt auf der Kachel bei Trend 03 prüfen, akzeptieren oder ablehnen.");
     }
 
     function acceptAlert(id) {
@@ -262,7 +523,7 @@
       if(trend && trend.pendingAlert) {
         trend.timeframe = trend.pendingAlert.suggestedTimeframe;
         trend.pendingAlert = null;
-        renderTrends();
+        renderCurrentView();
         alert("Änderung übernommen! Der Trend wurde aktualisiert.");
       }
     }
@@ -271,37 +532,60 @@
       const trend = trendsData.find(t => t.id === id);
       if(trend) {
         trend.pendingAlert = null;
-        renderTrends();
-        alert("KI-Empfehlungen verworfen. Der Status Quo bleibt unverändert.");
+        renderCurrentView();
+        alert("KI-Empfehlung verworfen. Der Status Quo bleibt unverändert.");
       }
     }
 
-    function openGlobalNewsModal() {
-      const list = document.getElementById('global-news-list');
-      list.innerHTML = globalNews.map(n => `
-        <div class="news-item">
-          <div>
-            <div style="font-weight:bold; font-size: 14px;">${n.title}</div>
-            <div style="font-size: 12px; color: var(--gray-subtle);">${n.source} • Betrifft: <b>${n.trend}</b></div>
-          </div>
-          <span style="font-size: 11px; color: var(--gray-subtle);">${n.date}</span>
-        </div>
-      `).join('');
-      document.getElementById('newsModal').classList.add('active');
+    function openDetailModal(id) {
+      const trend = trendsData.find(t => t.id === id);
+      if(!trend) return;
+
+      document.getElementById('modal-number').innerText = `TREND ${trend.id}`;
+      document.getElementById('modal-timeframe').innerText = trend.timeframe;
+      document.getElementById('modal-title').innerText = trend.title;
+      document.getElementById('modal-desc').innerText = trend.desc;
+      
+      const schwarzList = document.getElementById('modal-schwarz');
+      schwarzList.innerHTML = trend.schwarz.map(s => `<li>${s}</li>`).join('');
+
+      document.getElementById('detailModal').classList.add('active');
+    }
+
+    function openEditModal(id, e) {
+      e.stopPropagation();
+      editingTrendId = id;
+      const trend = trendsData.find(t => t.id === id);
+      if(!trend) return;
+
+      document.getElementById('edit-id').value = trend.id;
+      document.getElementById('edit-title').value = trend.title;
+      document.getElementById('edit-desc').value = trend.desc;
+      document.getElementById('edit-timeframe').value = trend.timeframe;
+      document.getElementById('edit-schwarz').value = trend.schwarz.join('\n');
+
+      document.getElementById('editModal').classList.add('active');
+    }
+
+    function saveTrendEdit() {
+      const trend = trendsData.find(t => t.id === editingTrendId);
+      if(trend) {
+        trend.id = document.getElementById('edit-id').value;
+        trend.title = document.getElementById('edit-title').value;
+        trend.desc = document.getElementById('edit-desc').value;
+        trend.timeframe = document.getElementById('edit-timeframe').value;
+        trend.schwarz = document.getElementById('edit-schwarz').value.split('\n').filter(s => s.trim() !== '');
+      }
+      closeModals();
+      renderCurrentView();
     }
 
     function closeModals() {
       document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
     }
 
-    function filterTimeframe(tf, btn) {
-      document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      // einfaches Filtern
-    }
-
     if(sessionStorage.getItem('sigma_auth') === 'true') {
-      renderTrends();
+      renderCurrentView();
     }
   </script>
 </body>
