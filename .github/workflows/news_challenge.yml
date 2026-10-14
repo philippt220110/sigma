@@ -1,0 +1,30 @@
+name: SIGMA News Challenge Agent
+
+on:
+  repository_dispatch:
+    types: [trigger-news-challenge]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * *'
+
+jobs:
+  run-news-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code auschecken
+        uses: actions/checkout@v3
+
+      - name: Python einrichten
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: News Agent ausführen
+        run: python scripts/news_agent.py
+
+      - name: Änderungen speichern & ins Repo committen
+        run: |
+          git config --global user.name 'SIGMA News Agent'
+          git config --global user.email 'agent@sigma-radar.internal'
+          git add .
+          git diff --quiet && git diff --staged --quiet || (git commit -m "⚡ SIGMA News Challenge: Trends automatisch evaluiert" && git push)
