@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGMA – Tech Trends Radar</title>
+  <style>
+    :root {
+      --bg-main: #ffffff;
+      --bg-surface: #e8ecef;
+      --bg-card: #ffffff;
+      --text-dark: #0a1e2d;
+      --accent-cyan: #00c3cd;
+      --teal-primary: #05717d;
+      --orange-alert: #ff7d01;
+      --gray-subtle: #718096;
+      --border-color: #d1d8dd;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-surface);
+      color: var(--text-dark);
+      padding: 24px;
+      line-height: 1.5;
+    }
+
+    /* Clean Dark Password Screen */
+    .password-screen {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #0a1e2d;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .password-box {
+      width: 100%;
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .password-title {
+      font-size: 24px;
+      font-weight: normal;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .password-input {
+      background: transparent;
+      border: 1px solid #ffffff;
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: #ffffff;
+      font-size: 16px;
+      outline: none;
+      width: 100%;
+    }
+
+    .password-input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .password-error {
+      color: #ff4d4d;
+      font-size: 13px;
+      display: none;
+    }
+
+    /* Main App Layout */
+    .app-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .app-container.unlocked {
+      display: flex;
+    }
+
+    /* Clean Header without White Box */
+    header {
+      background: transparent;
+      padding: 8px 4px 12px 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .brand-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand-subheadline {
+      font-size: 18px;
+      color: var(--gray-subtle);
+      font-weight: normal;
+      letter-spacing: -0.2px;
+    }
+
+    .brand-title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-title {
+      font-size: 46.67px; /* ca. +0.5pt größer */
+      font-weight: 700;
+      color: var(--text-dark);
+      letter-spacing: 0.8px; /* Leicht erhöhte Laufweite/Buchstabenabstand */
+      line-height: 1.0;
+    }
+
+    .brand-icon {
+      width: 34px;
+      height: 34px;
+      background-color: var(--accent-cyan);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--text-dark);
+      font-size: 18px;
+    }
+
+    .btn-primary {
+      background-color: var(--teal-primary);
+      color: #ffffff;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.2s;
+    }
+
+    .btn-primary:hover { opacity: 0.9; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    .bento-card {
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(10, 30, 45, 0.03);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .bento-dark {
+      background-color: var(--text-dark);
+      color: #ffffff;
+    }
+
+    .hero-title {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .stat-number {
+      font-size: 42px;
+      font-weight: bold;
+      color: var(--text-dark);
+    }
+
+    .bento-dark .stat-number { color: var(--accent-cyan); }
+
+    .stat-label {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--gray-subtle);
+      font-weight: bold;
+    }
+
+    .controls-bar {
+      background: var(--bg-main);
+      padding: 16px 24px;
+      border-radius: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .filter-group { display: flex; gap: 8px; }
+
+    .pill-btn {
+      background-color: var(--bg-surface);
+      border: none;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pill-btn.active {
+      background-color: var(--accent-cyan);
+      color: var(--text-dark);
+    }
+
+    .search-container { display: flex; gap: 10px; align-items: center; }
+
+    .search-input {
+      background-color: var(--bg-surface);
+      border: 1px solid transparent;
+      padding: 10px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      width: 280px;
+      outline: none;
+    }
+
+    .ranking-toggle-btn {
+      background-color: var(--bg-surface);
+      border: none;
+      padding: 10px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--text-dark);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .ranking-toggle-btn.active {
+      background-color: var(--orange-alert);
+      color: #ffffff;
+    }
+
+    .trends-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 20px;
+    }
+
+    .trends-grid.ranking-mode {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .trend-card {
+      background: var(--bg-main);
+      border-radius: 24px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      border: 1px solid rgba(209, 216, 221, 0.6);
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .trend-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(10, 30, 45, 0.06);
+    }
+
+    .trends-grid.ranking-mode .trend-card {
+      padding: 16px 24px;
+      border-radius: 16px;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .trends-grid.ranking-mode .use-case-box,
+    .trends-grid.ranking-mode .trend-desc,
+    .trends-grid.ranking-mode .card-edit-btn {
+      display: none;
+    }
+
+    .trends-grid.ranking-mode .ranking-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: 70%;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .trend-number {
+      font-size: 12px;
+      font-weight: bold;
+      background: var(--bg-surface);
+      color: var(--text-dark);
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
+
+    .timeframe-badge {
+      font-size: 12px;
+      font-weight: bold;
+      padding: 4px 12px;
+      border-radius: 12px;
+      background-color: var(--accent-cyan);
+      color: var(--text-dark);
+    }
+
+    .trend-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--text-dark);
+    }
+
+    .use-case-box {
+      background-color: var(--bg-surface);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: bold;
+      color: var(--teal-primary);
+      margin-bottom: 6px;
+    }
+
+    .use-case-list {
+      list-style: none;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .use-case-list li::before {
+      content: "• ";
+      color: var(--teal-primary);
+      font-weight: bold;
+    }
+
+    .card-edit-btn {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      background: var(--bg-surface);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .card-edit-btn:hover { background: var(--accent-cyan); }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(10, 30, 45, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal-content {
+      background: var(--bg-main);
+      border-radius: 24px;
+      max-width: 650px;
+      width: 100%;
+      padding: 28px;
+      max-height: 85vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-btn {
+      background: var(--bg-surface);
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .news-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .news-item {
+      background: var(--bg-surface);
+      padding: 12px 16px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+    }
+
+    .news-link {
+      color: var(--teal-primary);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+
+    .form-group label {
+      font-size: 12px;
+      font-weight: bold;
+      color: var(--gray-subtle);
+    }
+
+    .form-control {
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      font-size: 14px;
+      outline: none;
+    }
+
+    .form-control:focus { border-color: var(--accent-cyan); }
+  </style>
+</head>
+<body>
+
+  <!-- Minimal Dark Password Screen -->
+  <div class="password-screen" id="passwordScreen">
+    <div class="password-box">
+      <div class="password-title">Passwort</div>
+      <input type="password" class="password-input" id="passwordInput" placeholder="" onkeydown="if(event.key==='Enter') checkPassword()">
+      <div class="password-error" id="passwordError">Passwort falsch</div>
+    </div>
+  </div>
+
+  <!-- Dashboard Container -->
+  <div class="app-container" id="appContainer">
+    <header>
+      <div class="brand-block">
+        <div class="brand-subheadline">Schwarz Digits Tech Radar</div>
+        <div class="brand-title-row">
+          <div class="brand-title">SIGMA</div>
+          <div class="brand-icon">Σ</div>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="triggerNewsChallenge()">
+        ⚡ News Challenge Ausführen
+      </button>
+    </header>
+
+    <div class="hero-grid">
+      <div class="bento-card bento-dark">
+        <div>
+          <div class="stat-label" style="color: var(--accent-cyan);">Status Quo Dashboard</div>
+          <div class="hero-title">10x Technologietrends</div>
+          <div style="font-size: 14px; color: #a0aec0;">Echtzeit-Validierung von Markteinschätzungen.</div>
+        </div>
+      </div>
+      <div class="bento-card">
+        <div class="stat-label">Trends Gesamt</div>
+        <div class="stat-number">11</div>
+      </div>
+      <div class="bento-card">
+        <div class="stat-label">2-Jahres Focus</div>
+        <div class="stat-number" style="color: var(--teal-primary);">6</div>
+      </div>
+      <div class="bento-card">
+        <div class="stat-label">Active Alerts</div>
+        <div class="stat-number" id="alert-counter" style="color: var(--orange-alert);">0</div>
+      </div>
+    </div>
+
+    <div class="controls-bar">
+      <div class="filter-group">
+        <button class="pill-btn active" onclick="filterTimeframe('all', this)">Alle Trends</button>
+        <button class="pill-btn" onclick="filterTimeframe('2 Jahre', this)">2 Jahre</button>
+        <button class="pill-btn" onclick="filterTimeframe('5 Jahre', this)">5 Jahre</button>
+        <button class="pill-btn" onclick="filterTimeframe('10 Jahre', this)">10 Jahre</button>
+      </div>
+
+      <div class="search-container">
+        <input type="text" class="search-input" id="searchInput" placeholder="Trends suchen..." onkeyup="renderTrends()">
+        <button class="ranking-toggle-btn" id="rankingToggleBtn" onclick="toggleRankingView()">
+          ★ Ranking View
+        </button>
+      </div>
+    </div>
+
+    <div class="trends-grid" id="trendsGrid"></div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <span class="trend-number" id="modal-number">TREND 01</span>
+          <span class="timeframe-badge" id="modal-timeframe">2 Jahre</span>
+        </div>
+        <button class="close-btn" onclick="closeModals()">✕</button>
+      </div>
+      <h2 id="modal-title" style="font-size: 22px;"></h2>
+      <p id="modal-desc" style="color: #4a5568; font-size: 14px;"></p>
+
+      <div class="use-case-box">
+        <div class="section-title">Schwarz Gruppe Implikationen</div>
+        <ul class="use-case-list" id="modal-schwarz"></ul>
+      </div>
+
+      <div>
+        <div class="section-title">Letzte 5 News & Quellen</div>
+        <div class="news-list" id="modal-news"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div class="modal-overlay" id="editModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Trend Bearbeiten</h3>
+        <button class="close-btn" onclick="closeModals()">✕</button>
+      </div>
+      <div class="form-group">
+        <label>Ranking / Nummer (z. B. 01)</label>
+        <input type="text" class="form-control" id="edit-id">
+      </div>
+      <div class="form-group">
+        <label>Headline (Titel)</label>
+        <input type="text" class="form-control" id="edit-title">
+      </div>
+      <div class="form-group">
+        <label>Subheadline (Beschreibung)</label>
+        <textarea class="form-control" id="edit-desc" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Zeitlicher Horizont</label>
+        <select class="form-control" id="edit-timeframe">
+          <option value="2 Jahre">2 Jahre</option>
+          <option value="5 Jahre">5 Jahre</option>
+          <option value="10 Jahre">10 Jahre</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Schwarz Gruppe Implikationen (Eine pro Zeile)</label>
+        <textarea class="form-control" id="edit-schwarz" rows="3"></textarea>
+      </div>
+      <button class="btn-primary" onclick="saveTrendEdit()">Änderungen Speichern</button>
+    </div>
+  </div>
+
+  <script>
+    const CORRECT_PASSWORD = "sigma";
+
+    function checkPassword() {
+      const input = document.getElementById('passwordInput').value;
+      const errorMsg = document.getElementById('passwordError');
+      if(input === CORRECT_PASSWORD) {
+        document.getElementById('passwordScreen').style.display = 'none';
+        document.getElementById('appContainer').classList.add('unlocked');
+        sessionStorage.setItem('sigma_auth', 'true');
+        renderTrends();
+      } else {
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    if(sessionStorage.getItem('sigma_auth') === 'true') {
+      document.getElementById('passwordScreen').style.display = 'none';
+      document.getElementById('appContainer').classList.add('unlocked');
+    }
+
+    let trendsData = [
+      { id: "01", title: "Agentic AI & Multiagentensysteme", timeframe: "2 Jahre", desc: "Autonome KI-Agenten, die eigenständig Ziele verfolgen und in Teams kooperieren.", schwarz: ["Lieferketten-Orchestrierung", "Prozess-Automatisierung"], news: [{ title: "LangChain Launch Auto-Agents", url: "#" }, { title: "Agentic AI in Enterprise 2026", url: "#" }] },
+      { id: "02", title: "AI-Native Development", timeframe: "2 Jahre", desc: "Symbiose von Entwicklern und KI-Agenten ('Vibe Coding').", schwarz: ["Beschleunigung Schwarz IT Entwicklung", "Legacy-Code Refactoring"], news: [{ title: "Copilot Workspace Update", url: "#" }] },
+      { id: "03", title: "Physical AI & Humanoide Robotik", timeframe: "5 Jahre", desc: "Integration von VLMs in physische Roboter für autonome Aufgaben.", schwarz: ["Logistikzentren-Automatisierung", "PreZero Sortierung"], news: [{ title: "Tesla Optimus Gen 3 Rollout", url: "#" }] },
+      { id: "04", title: "Confidential Computing", timeframe: "5 Jahre", desc: "Hardware-basierte Sicherheit durch TEEs zum Schutz von Daten in der Cloud.", schwarz: ["STACKIT Cloud-Sicherheit", "DSGVO-KI-Verarbeitung"], news: [] },
+      { id: "05", title: "Sovereign AI / Geopatriation", timeframe: "2 Jahre", desc: "Regionale Cloud-Infrastrukturen zur Sicherung digitaler Souveränität.", schwarz: ["STACKIT als europäische Lösung", "Unabhängigkeit US Cloud Act"], news: [] },
+      { id: "06", title: "Quantum-Safe Crypto", timeframe: "5 Jahre", desc: "Migration auf PQC-Standards zum Schutz vor Quantencomputern.", schwarz: ["Finanz- & Kundendatenschutz", "PQC auf STACKIT"], news: [] },
+      { id: "07", title: "Bio-Digital Synthesis / Deep Biotech", timeframe: "10 Jahre", desc: "KI-gestützte Genomik und Materialentwicklung.", schwarz: ["Biologisch abbaubare Verpackungen", "Food Engineering"], news: [] },
+      { id: "08", title: "Digital Provenance & Trust", timeframe: "2 Jahre", desc: "Verifikation der Herkunft von Daten/Medien zur Bekämpfung von Deepfakes.", schwarz: ["Schutz Marke Lidl/Kaufland", "E-Commerce Produktsicherheit"], news: [] },
+      { id: "09", title: "AI Super Computing Platforms", timeframe: "5 Jahre", desc: "Hybride Rechenarchitekturen (GPU, ASICs, Quantum-as-a-Service).", schwarz: ["Hosting eigener Enterprise-LLMs", "Effizienz auf STACKIT"], news: [] },
+      { id: "10", title: "Preemptive Cybersecurity", timeframe: "2 Jahre", desc: "Proaktive KI-Verteidigung in Millisekunden vor Schadenseintritt.", schwarz: ["Kassensystem-Schutz in Filialen", "STACKIT Cyber-Resilienz"], news: [] },
+      { id: "11", title: "Hybrid Cloud / Hybrid Computing", timeframe: "2 Jahre", desc: "Orchestrierung von On-Premise, Edge und Cloud über eine Control Plane.", schwarz: ["Edge-Filialsysteme mit STACKIT Cloud", "Datensouveränität"], news: [] }
+    ];
+
+    let currentFilter = 'all';
+    let isRankingView = false;
+    let editingTrendId = null;
+
+    function renderTrends() {
+      const grid = document.getElementById('trendsGrid');
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      grid.innerHTML = '';
+
+      if (isRankingView) {
+        grid.classList.add('ranking-mode');
+      } else {
+        grid.classList.remove('ranking-mode');
+      }
+
+      let filtered = trendsData.filter(item => {
+        const matchesFilter = currentFilter === 'all' || item.timeframe.includes(currentFilter);
+        const matchesSearch = item.title.toLowerCase().includes(search) || item.desc.toLowerCase().includes(search);
+        return matchesFilter && matchesSearch;
+      });
+
+      filtered.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+
+      filtered.forEach(trend => {
+        const card = document.createElement('div');
+        card.className = 'trend-card';
+        card.onclick = (e) => {
+          if(!e.target.classList.contains('card-edit-btn')) openDetailModal(trend.id);
+        };
+
+        if (isRankingView) {
+          card.innerHTML = `
+            <div class="ranking-left">
+              <span class="trend-number">TREND ${trend.id}</span>
+              <div class="trend-title">${trend.title}</div>
+            </div>
+            <span class="timeframe-badge">${trend.timeframe}</span>
+          `;
+        } else {
+          card.innerHTML = `
+            <div class="card-header">
+              <span class="trend-number">TREND ${trend.id}</span>
+              <span class="timeframe-badge">${trend.timeframe}</span>
+            </div>
+            <div>
+              <div class="trend-title">${trend.title}</div>
+              <div class="trend-desc" style="margin-top: 6px;">${trend.desc}</div>
+            </div>
+            <div class="use-case-box">
+              <div class="section-title">Schwarz Gruppe Implikation</div>
+              <ul class="use-case-list">
+                ${trend.schwarz.map(uc => `<li>${uc}</li>`).join('')}
+              </ul>
+            </div>
+            <button class="card-edit-btn" onclick="openEditModal('${trend.id}', event)">✏️</button>
+          `;
+        }
+        grid.appendChild(card);
+      });
+    }
+
+    function toggleRankingView() {
+      isRankingView = !isRankingView;
+      const btn = document.getElementById('rankingToggleBtn');
+      if (isRankingView) btn.classList.add('active');
+      else btn.classList.remove('active');
+      renderTrends();
+    }
+
+    function filterTimeframe(tf, btn) {
+      currentFilter = tf;
+      document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderTrends();
+    }
+
+    function openDetailModal(id) {
+      const trend = trendsData.find(t => t.id === id);
+      if(!trend) return;
+
+      document.getElementById('modal-number').innerText = `TREND ${trend.id}`;
+      document.getElementById('modal-timeframe').innerText = trend.timeframe;
+      document.getElementById('modal-title').innerText = trend.title;
+      document.getElementById('modal-desc').innerText = trend.desc;
+      
+      const schwarzList = document.getElementById('modal-schwarz');
+      schwarzList.innerHTML = trend.schwarz.map(s => `<li>${s}</li>`).join('');
+
+      const newsList = document.getElementById('modal-news');
+      if (trend.news && trend.news.length > 0) {
+        newsList.innerHTML = trend.news.map(n => `
+          <div class="news-item">
+            <span>${n.title}</span>
+            <a href="${n.url}" target="_blank" class="news-link">Quelle öffnen ↗</a>
+          </div>
+        `).join('');
+      } else {
+        newsList.innerHTML = `<div style="font-size:13px; color:var(--gray-subtle);">Keine aktuellen News-Belege für diesen Trend erfasst.</div>`;
+      }
+
+      document.getElementById('detailModal').classList.add('active');
+    }
+
+    function openEditModal(id, e) {
+      e.stopPropagation();
+      editingTrendId = id;
+      const trend = trendsData.find(t => t.id === id);
+      if(!trend) return;
+
+      document.getElementById('edit-id').value = trend.id;
+      document.getElementById('edit-title').value = trend.title;
+      document.getElementById('edit-desc').value = trend.desc;
+      document.getElementById('edit-timeframe').value = trend.timeframe;
+      document.getElementById('edit-schwarz').value = trend.schwarz.join('\n');
+
+      document.getElementById('editModal').classList.add('active');
+    }
+
+    function saveTrendEdit() {
+      const trend = trendsData.find(t => t.id === editingTrendId);
+      if(trend) {
+        trend.id = document.getElementById('edit-id').value;
+        trend.title = document.getElementById('edit-title').value;
+        trend.desc = document.getElementById('edit-desc').value;
+        trend.timeframe = document.getElementById('edit-timeframe').value;
+        trend.schwarz = document.getElementById('edit-schwarz').value.split('\n').filter(s => s.trim() !== '');
+      }
+      closeModals();
+      renderTrends();
+    }
+
+    function closeModals() {
+      document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+    }
+
+    function triggerNewsChallenge() {
+      trendsData[2].timeframe = "2 Jahre";
+      trendsData[2].news.unshift({ title: "Durchbruch bei Embodied AI: Tesla & Figure skalieren Piloten", url: "https://example.com" });
+      document.getElementById('alert-counter').innerText = '1';
+      renderTrends();
+      alert("News Challenge ausgeführt: 1 Trend wurde aktualisiert!");
+    }
+
+    if(sessionStorage.getItem('sigma_auth') === 'true') {
+      renderTrends();
+    }
+  </script>
+</body>
+</html>
