@@ -1,0 +1,116 @@
+{
+  "last_updated": "2026-10-15",
+  "news_feed": [
+    {
+      "date": "14. Okt 2026",
+      "title": "Tesla & Figure 02 skalierten Piloten in der Logistik",
+      "source": "TechCrunch",
+      "trend": "Physical AI & Humanoide Robotik",
+      "desc": "Neue Durchbrüche bei feinmotorischer Greif-KI verkürzen den Zeitplan für den produktiven Einsatz in Lagerzentren."
+    },
+    {
+      "date": "12. Okt 2026",
+      "title": "NIST verabschiedet finale Post-Quantum Kryptospezifikation",
+      "source": "ArXiv Security",
+      "trend": "Quantum-Safe Crypto",
+      "desc": "Unternehmen werden aufgerufen, Vorbereitungen für die Umstellung kritischer Verschlüsselungen auf PQC zu beschleunigen."
+    },
+    {
+      "date": "08. Okt 2026",
+      "title": "LangChain stellt Agentic Multi-Systems v2 vor",
+      "source": "VentureBeat",
+      "trend": "Agentic AI & Multiagentensysteme",
+      "desc": "Autonome Agenten-Netzwerke übernehmen zunehmend komplexe Enterprise-Schnittstellen."
+    }
+  ],
+  "trends": [
+    {
+      "id": "01",
+      "title": "Agentic AI & Multiagentensysteme",
+      "timeframe": "2 Jahre",
+      "desc": "Autonome KI-Agenten, die eigenständig Ziele verfolgen und in Teams kooperieren.",
+      "schwarz": ["Lieferketten-Orchestrierung", "Prozess-Automatisierung"],
+      "pendingAlert": null
+    },
+    {
+      "id": "02",
+      "title": "AI-Native Development",
+      "timeframe": "2 Jahre",
+      "desc": "Symbiose von Entwicklern und KI-Agenten ('Vibe Coding').",
+      "schwarz": ["Beschleunigung Schwarz IT Entwicklung"],
+      "pendingAlert": null
+    },
+    {
+      "id": "03",
+      "title": "Physical AI & Humanoide Robotik",
+      "timeframe": "5 Jahre",
+      "desc": "Integration von VLMs in physische Roboter für autonome Aufgaben.",
+      "schwarz": ["Logistikzentren-Automatisierung", "PreZero Sortierung"],
+      "pendingAlert": null
+    },
+    {
+      "id": "04",
+      "title": "Confidential Computing",
+      "timeframe": "5 Jahre",
+      "desc": "Hardware-basierte Sicherheit durch TEEs zum Schutz von Daten in der Cloud.",
+      "schwarz": ["STACKIT Cloud-Sicherheit"],
+      "pendingAlert": null
+    },
+    {
+      "id": "05",
+      "title": "Sovereign AI / Geopatriation",
+      "timeframe": "2 Jahre",
+      "desc": "Regionale Cloud-Infrastrukturen zur Sicherung digitaler Souveränität.",
+      "schwarz": ["STACKIT als europäische Lösung"],
+      "pendingAlert": null
+    },
+    {
+      "id": "06",
+      "title": "Quantum-Safe Crypto",
+      "timeframe": "5 Jahre",
+      "desc": "Migration auf PQC-Standards zum Schutz vor Quantencomputern.",
+      "schwarz": ["Finanz- & Kundendatenschutz"],
+      "pendingAlert": null
+    },
+    {
+      "id": "07",
+      "title": "Bio-Digital Synthesis",
+      "timeframe": "10 Jahre",
+      "desc": "KI-gestützte Genomik und Materialentwicklung.",
+      "schwarz": ["Biologisch abbaubare Verpackungen"],
+      "pendingAlert": null
+    },
+    {
+      "id": "08",
+      "title": "Digital Provenance & Trust",
+      "timeframe": "2 Jahre",
+      "desc": "Verifikation der Herkunft von Daten/Medien.",
+      "schwarz": ["Schutz Marke Lidl/Kaufland"],
+      "pendingAlert": null
+    },
+    {
+      "id": "09",
+      "title": "AI Super Computing Platforms",
+      "timeframe": "5 Jahre",
+      "desc": "Hybride Rechenarchitekturen (GPU, ASICs).",
+      "schwarz": ["Hosting eigener Enterprise-LLMs"],
+      "pendingAlert": null
+    },
+    {
+      "id": "10",
+      "title": "Preemptive Cybersecurity",
+      "timeframe": "2 Jahre",
+      "desc": "Proaktive KI-Verteidigung vor Schadenseintritt.",
+      "schwarz": ["Kassensystem-Schutz in Filialen"],
+      "pendingAlert": null
+    },
+    {
+      "id": "11",
+      "title": "Hybrid Cloud / Hybrid Computing",
+      "timeframe": "2 Jahre",
+      "desc": "Orchestrierung von Edge und Cloud.",
+      "schwarz": ["Edge-Filialsysteme mit STACKIT"],
+      "pendingAlert": null
+    }
+  ]
+}
