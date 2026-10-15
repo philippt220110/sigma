@@ -43,15 +43,33 @@
     .btn-primary { background-color: var(--teal-primary); color: #ffffff; border: none; padding: 12px 22px; border-radius: 30px; font-size: 14px; font-weight: bold; cursor: pointer; transition: opacity 0.2s; }
     .btn-primary:hover { opacity: 0.9; }
 
-    .hero-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 16px; }
-    .bento-card { background: var(--bg-card); border-radius: 24px; padding: 24px; box-shadow: 0 4px 12px rgba(10, 30, 45, 0.03); display: flex; flex-direction: column; justify-content: space-between; }
-    .bento-dark { background-color: var(--text-dark); color: #ffffff; }
+    /* STATISCHE RECHTECKIGE KACHELN FÜR DIE OBERE KPIS-REIHE */
+    .hero-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.2fr; gap: 16px; }
+    .bento-card { 
+      background: var(--bg-card); 
+      border-radius: 0px; /* Rechteckige statische Kacheln */
+      padding: 24px; 
+      box-shadow: 0 2px 8px rgba(10, 30, 45, 0.04); 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between;
+      border: 1px solid var(--border-color);
+    }
+    .bento-dark { background-color: var(--text-dark); color: #ffffff; border: none; }
     .hero-title { font-size: 28px; font-weight: bold; margin-bottom: 8px; }
     .stat-number { font-size: 42px; font-weight: bold; color: var(--text-dark); }
     .bento-dark .stat-number { color: var(--accent-cyan); }
     .stat-label { font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-subtle); font-weight: bold; }
 
-    /* Transparente Controls Bar ohne weissen Container-Kasten */
+    /* Control Panel Box (klickbar) */
+    .control-board-card {
+      cursor: pointer;
+      border-left: 4px solid var(--orange-alert);
+      transition: background-color 0.2s;
+    }
+    .control-board-card:hover { background-color: #fcfcfd; }
+
+    /* Transparente Controls Bar */
     .controls-bar {
       background: transparent;
       padding: 4px 0;
@@ -64,7 +82,7 @@
 
     .filter-group { display: flex; gap: 8px; align-items: center; }
 
-    /* Inaktive Buttons weiss (#ffffff), aktive Buttons cyan (#00c3cd) */
+    /* Abgerundete Klick-Elemente unterhalb */
     .pill-btn {
       background-color: #ffffff;
       border: 1px solid transparent;
@@ -88,7 +106,6 @@
 
     .right-controls { display: flex; gap: 10px; align-items: center; }
 
-    /* Weisses Suchfeld */
     .search-input {
       background-color: #ffffff;
       border: 1px solid transparent;
@@ -121,12 +138,13 @@
       color: #ffffff;
     }
 
+    /* Abgerundete Trend-Kacheln */
     .trends-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px; }
     .trends-grid.ranking-mode { display: flex; flex-direction: column; gap: 12px; }
 
     .trend-card {
       background: var(--bg-main);
-      border-radius: 24px;
+      border-radius: 24px; /* Abgerundet für klickbare Elemente */
       padding: 24px;
       display: flex;
       flex-direction: column;
@@ -151,16 +169,9 @@
     .trends-grid.ranking-mode .use-case-box,
     .trends-grid.ranking-mode .trend-desc,
     .trends-grid.ranking-mode .alert-banner,
-    .trends-grid.ranking-mode .card-edit-btn {
-      display: none;
-    }
+    .trends-grid.ranking-mode .card-edit-btn { display: none; }
 
-    .trends-grid.ranking-mode .ranking-left {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      width: 70%;
-    }
+    .trends-grid.ranking-mode .ranking-left { display: flex; align-items: center; gap: 16px; width: 70%; }
 
     .alert-banner { background-color: #fff3e6; border: 1px solid var(--orange-alert); padding: 12px; border-radius: 12px; font-size: 13px; display: flex; flex-direction: column; gap: 6px; }
     .alert-banner-header { font-weight: bold; color: var(--orange-alert); display: flex; justify-content: space-between; }
@@ -222,15 +233,16 @@
           <div class="brand-icon">Σ</div>
         </div>
       </div>
-      <button class="btn-primary" onclick="triggerNewsChallenge()">⚡ News Challenge Ausführen</button>
+      <button class="btn-primary" onclick="triggerWeeklyAgent()">⚡ Weekly Agent Ausführen</button>
     </header>
 
+    <!-- Rechteckige statische KPI-Kacheln -->
     <div class="hero-grid">
       <div class="bento-card bento-dark">
         <div>
           <div class="stat-label" style="color: var(--accent-cyan);">Status Quo Dashboard</div>
           <div class="hero-title">10x Technologietrends</div>
-          <div style="font-size: 14px; color: #a0aec0;">Echtzeit-Validierung von Markteinschätzungen.</div>
+          <div style="font-size: 13px; color: #a0aec0;">Wöchentliche Marktevaluierung & Alignment.</div>
         </div>
       </div>
       <div class="bento-card">
@@ -241,13 +253,14 @@
         <div class="stat-label">2-Jahres Focus</div>
         <div class="stat-number" style="color: var(--teal-primary);" id="focus-counter">6</div>
       </div>
-      <div class="bento-card">
-        <div class="stat-label">Active Alerts</div>
+      <div class="bento-card control-board-card" onclick="openControlBoardModal()">
+        <div class="stat-label">Control Board</div>
         <div class="stat-number" id="alert-counter" style="color: var(--orange-alert);">0</div>
+        <div style="font-size: 11px; color: var(--gray-subtle); font-weight: bold;">Weekly Briefing ↗</div>
       </div>
     </div>
 
-    <!-- Transparente Controls-Bar ohne Umrandungs-Kasten -->
+    <!-- Abgerundete Filter & Control-Elemente -->
     <div class="controls-bar">
       <div class="filter-group">
         <button class="pill-btn" id="newsFeedBtn" onclick="showNewsFeed(this)">News Feed (3)</button>
@@ -264,6 +277,26 @@
     </div>
 
     <div class="trends-grid" id="trendsGrid"></div>
+  </div>
+
+  <!-- Weekly Control Board Modal -->
+  <div class="modal-overlay" id="controlBoardModal">
+    <div class="modal-content">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3>📋 Weekly Strategy Control Board</h3>
+        <button class="close-btn" onclick="closeModals()">✕</button>
+      </div>
+      <div style="background: var(--bg-surface); padding: 16px; border-radius: 12px;">
+        <div style="font-weight:bold; font-size: 13px; color: var(--teal-primary);">STATUS QUO EVALUATION (WOCHE KW 42)</div>
+        <div style="font-size: 14px; margin-top: 6px;" id="weekly-status-text">
+          Die Marktlage für die 11 Core-Trends ist stabil. 1 Trend weist signifikantes Tempo-Momentum auf.
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:bold; font-size: 13px; margin-bottom: 8px;">EMPFOHLENE ALIGNMENT-ANPASSUNGEN</div>
+        <div id="weekly-changes-list"></div>
+      </div>
+    </div>
   </div>
 
   <!-- Detail Modal -->
@@ -340,15 +373,16 @@
       document.getElementById('appContainer').classList.add('unlocked');
     }
 
-    let activeView = 'trends'; // 'trends' oder 'news'
+    let activeView = 'trends';
     let currentFilter = 'all';
     let isRankingView = false;
     let editingTrendId = null;
 
+    // Rollierender 4-Wochen News Feed
     let globalNews = [
-      { date: "Heute 11:30", title: "Tesla & Figure 02 skalierten Piloten in der Logistik", source: "TechCrunch", trend: "Physical AI & Humanoide Robotik", desc: "Neue Durchbrüche bei feinmotorischer Greif-KI verkürzen den Zeitplan für den produktiven Einsatz in Lagerzentren." },
-      { date: "Gestern 18:00", title: "NIST veröffentlicht finale Post-Quantum Kryptospezifikation", source: "ArXiv Security", trend: "Quantum-Safe Crypto", desc: "Unternehmen werden aufgerufen, Vorbereitungen für die Umstellung kritischer Verschlüsselungen auf PQC zu beschleunigen." },
-      { date: "Gestern 09:15", title: "LangChain stellt Agentic Multi-Systems v2 vor", source: "VentureBeat", trend: "Agentic AI & Multiagentensysteme", desc: "Autonome Agenten-Netzwerke übernehmen zunehmend komplexe Enterprise-Schnittstellen." }
+      { date: "14. Okt 2026", title: "Tesla & Figure 02 skalierten Piloten in der Logistik", source: "TechCrunch", trend: "Physical AI & Humanoide Robotik", desc: "Neue Durchbrüche bei feinmotorischer Greif-KI verkürzen den Zeitplan für den produktiven Einsatz in Lagerzentren." },
+      { date: "12. Okt 2026", title: "NIST verabschiedet finale Post-Quantum Kryptospezifikation", source: "ArXiv Security", trend: "Quantum-Safe Crypto", desc: "Unternehmen werden aufgerufen, Vorbereitungen für die Umstellung kritischer Verschlüsselungen auf PQC zu beschleunigen." },
+      { date: "08. Okt 2026", title: "LangChain stellt Agentic Multi-Systems v2 vor", source: "VentureBeat", trend: "Agentic AI & Multiagentensysteme", desc: "Autonome Agenten-Netzwerke übernehmen zunehmend komplexe Enterprise-Schnittstellen." }
     ];
 
     let trendsData = [
@@ -427,7 +461,7 @@
             ${trend.pendingAlert ? `
               <div class="alert-banner">
                 <div class="alert-banner-header">
-                  <span>⚠️ EMPFEHLUNG DER KI</span>
+                  <span>⚠️ VORSCHLAG CONTROL BOARD</span>
                 </div>
                 <div>${trend.pendingAlert.reason}</div>
                 <div style="font-size: 11px; color: var(--gray-subtle); margin-top:2px;">Beleg: "${trend.pendingAlert.sourceNews}"</div>
@@ -493,7 +527,7 @@
     }
 
     function toggleRankingView() {
-      if(activeView === 'news') return; // Ranking nur im Trends Mode
+      if(activeView === 'news') return;
       isRankingView = !isRankingView;
       const btn = document.getElementById('rankingToggleBtn');
       if (isRankingView) btn.classList.add('active');
@@ -501,21 +535,15 @@
       renderCurrentView();
     }
 
-    function triggerNewsChallenge() {
+    function triggerWeeklyAgent() {
       trendsData[2].pendingAlert = {
         suggestedTimeframe: "2 Jahre",
-        reason: "Vorschlag: Zeithorizont von 5 Jahre auf 2 Jahre verkürzen.",
+        reason: "Wochen-Synthese: Zeithorizont von 5 Jahre auf 2 Jahre verkürzen.",
         sourceNews: "Tesla & Figure 02 skalierten Piloten in der Logistik"
       };
 
-      if(activeView === 'news') {
-        activeView = 'trends';
-        document.querySelectorAll('.filter-group .pill-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.filter-group .pill-btn')[1].classList.add('active');
-      }
-
       renderCurrentView();
-      alert("⚡ News Challenge ausgeführt! Die KI hat 1 neuen Vorschlag generiert. Du kannst ihn direkt auf der Kachel bei Trend 03 prüfen, akzeptieren oder ablehnen.");
+      alert("⚡ Weekly Agent ausgeführt! Der wöchentliche Trend-Check wurde simuliert und 1 Vorschlag im Control Board generiert.");
     }
 
     function acceptAlert(id) {
@@ -524,7 +552,7 @@
         trend.timeframe = trend.pendingAlert.suggestedTimeframe;
         trend.pendingAlert = null;
         renderCurrentView();
-        alert("Änderung übernommen! Der Trend wurde aktualisiert.");
+        alert("Änderung übernommen! Der Trend wurde im Radar aktualisiert.");
       }
     }
 
@@ -533,8 +561,30 @@
       if(trend) {
         trend.pendingAlert = null;
         renderCurrentView();
-        alert("KI-Empfehlung verworfen. Der Status Quo bleibt unverändert.");
+        alert("Vorschlag verworfen. Der Status Quo bleibt unverändert.");
       }
+    }
+
+    function openControlBoardModal() {
+      const container = document.getElementById('weekly-changes-list');
+      const alerts = trendsData.filter(t => t.pendingAlert);
+
+      if(alerts.length === 0) {
+        container.innerHTML = `<div style="font-size:13px; color:var(--gray-subtle); padding:10px 0;">Keine ausstehenden Trend-Anpassungen in dieser Woche. Alle 11 Baseline-Trends sind verifiziert.</div>`;
+      } else {
+        container.innerHTML = alerts.map(a => `
+          <div style="background:#fff3e6; border-left:4px solid var(--orange-alert); padding:12px; border-radius:8px; margin-top:8px;">
+            <div style="font-weight:bold; font-size:13px;">Trend ${a.id}: ${a.title}</div>
+            <div style="font-size:12px; margin-top:2px;">${a.pendingAlert.reason}</div>
+            <div style="margin-top:8px; display:flex; gap:8px;">
+              <button class="btn-accept" onclick="acceptAlert('${a.id}'); closeModals();">✓ Akzeptieren</button>
+              <button class="btn-reject" onclick="rejectAlert('${a.id}'); closeModals();">✕ Ablehnen</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('controlBoardModal').classList.add('active');
     }
 
     function openDetailModal(id) {
