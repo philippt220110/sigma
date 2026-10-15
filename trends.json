@@ -1,28 +1,6 @@
 {
   "last_updated": "2026-10-15",
-  "news_feed": [
-    {
-      "date": "14. Okt 2026",
-      "title": "Tesla & Figure 02 skalierten Piloten in der Logistik",
-      "source": "TechCrunch",
-      "trend": "Physical AI & Humanoide Robotik",
-      "desc": "Neue Durchbrüche bei feinmotorischer Greif-KI verkürzen den Zeitplan für den produktiven Einsatz in Lagerzentren."
-    },
-    {
-      "date": "12. Okt 2026",
-      "title": "NIST verabschiedet finale Post-Quantum Kryptospezifikation",
-      "source": "ArXiv Security",
-      "trend": "Quantum-Safe Crypto",
-      "desc": "Unternehmen werden aufgerufen, Vorbereitungen für die Umstellung kritischer Verschlüsselungen auf PQC zu beschleunigen."
-    },
-    {
-      "date": "08. Okt 2026",
-      "title": "LangChain stellt Agentic Multi-Systems v2 vor",
-      "source": "VentureBeat",
-      "trend": "Agentic AI & Multiagentensysteme",
-      "desc": "Autonome Agenten-Netzwerke übernehmen zunehmend komplexe Enterprise-Schnittstellen."
-    }
-  ],
+  "news_feed": [],
   "trends": [
     {
       "id": "01",
