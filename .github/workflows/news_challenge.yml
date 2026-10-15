@@ -2,7 +2,7 @@ name: SIGMA Weekly Intelligence Agent
 
 on:
   schedule:
-    - cron: '0 7 * * 1' # Läuft exakt jeden Montag um 07:00 Uhr UTC
+    - cron: '0 7 * * 1'
   repository_dispatch:
     types: [trigger-weekly-agent]
   workflow_dispatch:
@@ -22,9 +22,11 @@ jobs:
       - name: Abhängigkeiten installieren
         run: |
           python -m pip install --upgrade pip
-          pip install feedparser
+          pip install feedparser google-genai
 
-      - name: Weekly Ingestion Agent ausführen
+      - name: Weekly Agent mit Gemini AI ausführen
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scripts/news_agent.py
 
       - name: Äußerungen ins Repo committen
@@ -32,4 +34,4 @@ jobs:
           git config --global user.name 'SIGMA Strategy Agent'
           git config --global user.email 'agent@sigma-radar.internal'
           git add .
-          git diff --quiet && git diff --staged --quiet || (git commit -m "📋 Weekly Strategy Digest: Baseline verifiziert" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "📋 Weekly Strategy Digest: Gemini AI Baseline Evaluation" && git push)
